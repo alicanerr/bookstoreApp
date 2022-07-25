@@ -1,0 +1,164 @@
+<div class="card">
+    <div class="card-header">
+      <div class="row">
+        <div class="col col-md-6">
+          <h5 class="card-title">
+            {{ '::OrderMasterPage' | abpLocalization }}
+          </h5>
+        </div>
+        <div class="text-end col col-md-6">
+          <div class="text-lg-end pt-2">
+          
+            <button *abpPermission="'BookStore.OrderDetails.Create'" id="create" class="btn btn-primary" type="button"
+              (click)="createorderMaster()">
+              <i class="fa fa-plus mr-1"></i>
+              <span>{{ '::New Order' | abpLocalization }}</span>
+            </button>
+
+          </div>
+        </div>
+        <div class="text-end col col-md-6"></div>
+      </div>
+    </div>
+  
+    <div class="card-body">
+  
+  
+  
+      <ngx-datatable [rows]="orderMaster.items" [count]="orderMaster.totalCount" [list]="list" default>
+  
+        <ngx-datatable-column [name]="'::Actions' | abpLocalization" [maxWidth]="150" [sortable]="false">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <div ngbDropdown container="body" class="d-inline-block">
+              <button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                ngbDropdownToggle>
+                <i class="fa fa-cog mr-1"></i>{{ '::Actions' | abpLocalization }}
+              </button>
+              <div ngbDropdownMenu>
+                <!-- Add the abpPermission directive -->
+                <button *abpPermission="'BookStore.OrderDetails.Edit'" ngbDropdownItem (click)="editorderMaster(row.id)">
+                  {{ '::Edit' | abpLocalization }}
+                </button>
+                <!-- Add the abpPermission directive -->
+                <button *abpPermission="'BookStore.OrderDetails.Delete'" ngbDropdownItem (click)="delete(row.id)">
+                  {{ '::Delete' | abpLocalization }}
+                </button>
+  
+              </div>
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+  
+        <!-- <ngx-datatable-column [name]="'::OrderDetailId' | abpLocalization" prop="orderDetailId"></ngx-datatable-column> -->
+  
+        <!-- <ngx-datatable-column [name]="'::CustomerId' | abpLocalization" prop="customerId"></ngx-datatable-column> -->
+
+          <ngx-datatable-column [name]="'::CustomerName' | abpLocalization" prop="customerName" [sortable]="false"></ngx-datatable-column>
+
+          <ngx-datatable-column [name]="'::StokAdi' | abpLocalization" prop="stockName" [sortable]="false"></ngx-datatable-column>
+  
+        
+        <ngx-datatable-column [name]="'::SiparisTarihi' | abpLocalization" prop="siparisTarihi"> <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row.siparisTarihi | date }}
+      </ng-template>
+  </ngx-datatable-column>
+
+
+        <ngx-datatable-column [name]="'::SevkAdres' | abpLocalization" prop="sevkAdres"></ngx-datatable-column>
+            <ngx-datatable-column [name]="'::OnayBilgisi' | abpLocalization" prop="onayBilgisi"></ngx-datatable-column>
+  
+      
+      </ngx-datatable>
+    </div>
+  </div>
+  
+  
+  
+   <abp-modal [(visible)]="isModalOpen">
+    <ng-template #abpHeader>
+        <h3>{{ (selectedorderMaster.id ? '::Edit' : '::New Order' ) | abpLocalization }}</h3>
+    </ng-template>
+  
+    <ng-template #abpBody>
+        <form [formGroup]="form" (ngSubmit)="save()">
+
+          <div class="form-group">
+            <label for="customer-id">{{ '::CustomerName' | abpLocalization }}</label><span> * </span>
+            <select class="form-control" id="customer-id" formControlName="customerId">
+              <option [ngValue]="null">Select customer</option>
+              <option [ngValue]="customer.id" *ngFor="let customer of customer$ | async">
+                {{ customer.musteriAd }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="orderDetail-id">{{ '::StokAdi' | abpLocalization }}</label><span> * </span>
+            <select class="form-control" id="orderDetail-id" formControlName="orderDetailId">
+              <option [ngValue]="null">Select Stock Name</option>
+              <option [ngValue]="orderDetail.id" *ngFor="let orderDetail of orderDetail$ | async">
+                {{ orderDetail.stokAdi }}
+              </option>
+            </select>
+          </div>
+
+            <!-- <div class="form-group">
+                <label for="OrderDetailId">{{ '::OrderDetailId' | abpLocalization }}</label><span> * </span>
+                <input type="text" id="OrderDetailId" class="form-control" formControlName="orderDetailId" autofocus />
+            </div> -->
+  
+            <!-- <div class="form-group">
+                <label for="CustomerId">customerId</label><span> * </span>
+                <input type="text" id="CustomerId" class="form-control" formControlName="customerId" />
+            </div> -->
+  
+            <!-- <div class="form-group">
+              <label for="SiparisTarihi">siparisTarihi</label><span> * </span>
+              <input type="text" id="SiparisTarihi" class="form-control" formControlName="siparisTarihi" />
+          </div> -->
+          <div class="form-group">
+            <label>{{ '::SiparisTarihi' | abpLocalization }}</label><span> * </span>
+            <input
+              #datepicker="ngbDatepicker"
+              class="form-control"
+              name="datepicker"
+              formControlName="siparisTarihi"
+              ngbDatepicker
+              (click)="datepicker.toggle()"
+            />
+          </div>
+          <div class="form-group">
+            <label for="SevkAdres">{{ '::SevkAdres' | abpLocalization }}</label><span> * </span>
+            <input type="text" id="SevkAdres" class="form-control" formControlName="sevkAdres" />
+        </div>
+        <div class="form-group">
+          <label for="OnayBilgisi">{{ '::OnayBilgisi' | abpLocalization }}</label><span> * </span>
+          <!-- <input type="text" id="OnayBilgisi" class="form-control" formControlName="onayBilgisi" /> -->
+          <select class="form-control" id="OnayBilgisi" formControlName="onayBilgisi">
+            <option>True</option>
+            <option>False</option>
+            
+          </select>
+      </div>
+
+   
+
+        </form>
+    </ng-template>
+  
+  
+    <ng-template #abpFooter>
+        <button type="button" class="btn btn-secondary" abpClose>
+            {{ '::Close' | abpLocalization }}
+        </button>
+  
+  
+        <button class="btn btn-primary" (click)="save()" [disabled]="form.invalid">
+            <i class="fa fa-check mr-1"></i>
+            {{ '::Save' | abpLocalization }}
+        </button>
+    </ng-template>
+  
+  </abp-modal>   
+  
+  

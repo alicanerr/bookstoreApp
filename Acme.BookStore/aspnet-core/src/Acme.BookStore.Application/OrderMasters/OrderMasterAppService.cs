@@ -52,6 +52,14 @@ namespace Acme.BookStore.OrderMasters
 
             await Repository.DeleteAsync(id);
         }
+        public async Task CustomEditAsync(Guid id, OrderMasterDto input)
+        {
+            if (input.OnayBilgisi == true)
+            {
+                throw new OrderMasterApprovalStatusException();
+            }
+           
+        }
 
 
 

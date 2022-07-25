@@ -25,6 +25,14 @@ export class OrderMasterService {
     },
     { apiName: this.apiName });
 
+  customEdit = (id: string, input: OrderMasterDto) =>
+    this.restService.request<any, void>({
+      method: 'POST',
+      url: `/api/app/order-master/${id}/custom-edit`,
+      body: input,
+    },
+    { apiName: this.apiName });
+
   delete = (id: string) =>
     this.restService.request<any, void>({
       method: 'DELETE',

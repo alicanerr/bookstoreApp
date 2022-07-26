@@ -55,7 +55,9 @@ export class AuthorComponent implements OnInit {
       birthDate: [
         this.selectedAuthor.birthDate ? new Date(this.selectedAuthor.birthDate) : null,
         Validators.required,
+        
       ],
+      shortBio: [this.selectedAuthor.shortBio || '', Validators.required],
     });
   }
 

@@ -1,4 +1,5 @@
 ﻿using Acme.BookStore.Localization;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Volo.Abp.AuditLogging;
 using Volo.Abp.BackgroundJobs;
 using Volo.Abp.FeatureManagement;
@@ -54,5 +55,6 @@ public class BookStoreDomainSharedModule : AbpModule
         {
             options.MapCodeNamespace("BookStore", typeof(BookStoreResource));
         });
+     
     }
 }

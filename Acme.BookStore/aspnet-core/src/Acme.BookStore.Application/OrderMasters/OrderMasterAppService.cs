@@ -56,7 +56,7 @@ namespace Acme.BookStore.OrderMasters
         {
             if (input.OnayBilgisi == true)
             {
-                throw new OrderMasterApprovalStatusException();
+                throw new OrderMasterApprovalStatusEditException();
             }
            
         }

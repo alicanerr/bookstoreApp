@@ -29,6 +29,7 @@ using Volo.Abp.Modularity;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 
 namespace Acme.BookStore;
 
@@ -46,6 +47,7 @@ namespace Acme.BookStore;
 )]
 public class BookStoreHttpApiHostModule : AbpModule
 {
+
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
         var configuration = context.Services.GetConfiguration();
@@ -59,6 +61,7 @@ public class BookStoreHttpApiHostModule : AbpModule
         ConfigureVirtualFileSystem(context);
         ConfigureCors(context, configuration);
         ConfigureSwaggerServices(context, configuration);
+     
     }
 
     private void ConfigureBundles()
@@ -71,6 +74,8 @@ public class BookStoreHttpApiHostModule : AbpModule
             );
         });
     }
+
+
 
     private void ConfigureUrls(IConfiguration configuration)
     {
@@ -246,4 +251,5 @@ public class BookStoreHttpApiHostModule : AbpModule
         app.UseAbpSerilogEnrichers();
         app.UseConfiguredEndpoints();
     }
+
 }

@@ -13,6 +13,8 @@ using Volo.Abp.PermissionManagement.Identity;
 using Volo.Abp.PermissionManagement.IdentityServer;
 using Volo.Abp.SettingManagement;
 using Volo.Abp.TenantManagement;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
+using Volo.Abp.Caching;
 
 namespace Acme.BookStore;
 
@@ -40,6 +42,10 @@ public class BookStoreDomainModule : AbpModule
 
 #if DEBUG
         context.Services.Replace(ServiceDescriptor.Singleton<IEmailSender, NullEmailSender>());
+        //Configure<AbpDistributedCacheOptions>(options =>
+        //{
+        //    options.KeyPrefix = "Books";
+        //});
 #endif
     }
 }

@@ -46,6 +46,7 @@
     "Menu:OrderMasters": "Order Masters",
     "BookStore:00001": "There is already an author with the same name: {name}",
     "BookStore:00002": "onaylı sipariş silinemez",
+    "BookStore:00003": "onaylı sipariş düzenlenemez",
     "Permission:Authors": "Author Management",
     "Permission:Authors.Create": "Creating new authors",
     "Permission:Authors.Edit": "Editing the authors",
@@ -70,6 +71,7 @@
     "Tutar": "Price",
     "OrderDetailPage": "Order Details",
     "OrderMasterPage": "Order Masters"
+
 
 
 

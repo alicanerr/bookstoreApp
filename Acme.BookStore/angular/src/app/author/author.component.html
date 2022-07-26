@@ -50,6 +50,8 @@
             {{ row.birthDate | date }}
           </ng-template>
         </ngx-datatable-column>
+        <ngx-datatable-column [name]="'::ShortBio' | abpLocalization" prop="shortBio"></ngx-datatable-column>
+
       </ngx-datatable>
     </div>
   </div>
@@ -76,6 +78,11 @@
             ngbDatepicker
             (click)="datepicker.toggle()"
           />
+        </div>
+
+        <div class="form-group">
+          <label for="short-bio">{{ '::shortbio' | abpLocalization }}</label><span> * </span>
+          <input type="text" id="short-bio" class="form-control" formControlName="shortBio" autofocus />
         </div>
       </form>
     </ng-template>

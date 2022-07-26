@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
@@ -11,6 +11,8 @@ using Volo.Abp.Modularity;
 using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
+using Volo.Abp.Caching.StackExchangeRedis;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 
 namespace Acme.BookStore.EntityFrameworkCore;
 
@@ -26,7 +28,8 @@ namespace Acme.BookStore.EntityFrameworkCore;
     typeof(AbpTenantManagementEntityFrameworkCoreModule),
     typeof(AbpFeatureManagementEntityFrameworkCoreModule)
     )]
-public class BookStoreEntityFrameworkCoreModule : AbpModule
+[DependsOn(typeof(AbpCachingStackExchangeRedisModule))]
+    public class BookStoreEntityFrameworkCoreModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
@@ -48,5 +51,6 @@ public class BookStoreEntityFrameworkCoreModule : AbpModule
                  * See also BookStoreMigrationsDbContextFactory for EF Core tooling. */
             options.UseSqlServer();
         });
+ 
     }
 }

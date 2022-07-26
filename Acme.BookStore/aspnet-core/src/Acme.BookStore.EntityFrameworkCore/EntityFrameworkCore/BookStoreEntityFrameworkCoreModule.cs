@@ -51,6 +51,10 @@ namespace Acme.BookStore.EntityFrameworkCore;
                  * See also BookStoreMigrationsDbContextFactory for EF Core tooling. */
             options.UseSqlServer();
         });
- 
+        Configure<RedisCacheOptions>(options =>
+        {
+            //...
+        });
+
     }
 }

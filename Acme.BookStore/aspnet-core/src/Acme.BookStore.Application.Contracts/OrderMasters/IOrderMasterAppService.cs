@@ -9,9 +9,9 @@ namespace Acme.BookStore.OrderMasters
 {
     public interface IOrderMasterAppService : ICrudAppService<OrderMasterDto, Guid, PagedAndSortedResultRequestDto,CreateUpdateOrderMasterDto>
     {
-        Task<ListResultDto<CustomerLookupDto>> GetCustomerLookupAsync();
-        //Task<ExtensiblePagedResultDto<OrderMasterDto>> GetListAsync(ExtensiblePagedAndSortedResultRequestDto input);
-        Task<ListResultDto<OrderDetailLookupDto>> GetOrderDetailLookupAsync();
+        //Task<ListResultDto<CustomerLookupDto>> GetCustomerLookupAsync();
+        ////Task<ExtensiblePagedResultDto<OrderMasterDto>> GetListAsync(ExtensiblePagedAndSortedResultRequestDto input);
+        //Task<ListResultDto<OrderDetailLookupDto>> GetOrderDetailLookupAsync();
         //Task DeleteAsync(Guid id, OrderMasterDto input);
     }
 }

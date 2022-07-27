@@ -56,7 +56,7 @@ function configureRoutes(routes: RoutesService) {
         name: '::Menu:OrderMasters',
         parentName: '::Menu:BookStore',
         layout: eLayoutType.application,
-        // requiredPolicy: 'BookStore.OrderDetails',
+        requiredPolicy: 'BookStore.OrderMasters',
       },
     ]);
   };

@@ -13,6 +13,8 @@ using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using Volo.Abp.Caching.StackExchangeRedis;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace Acme.BookStore.EntityFrameworkCore;
 
@@ -38,6 +40,20 @@ namespace Acme.BookStore.EntityFrameworkCore;
 
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
+        var configuration = context.Services.GetConfiguration();
+
+        context.Services.AddStackExchangeRedisCache(options =>
+        {
+            var redisConfiguration = configuration["Redis:Configuration"];
+            if (!redisConfiguration.IsNullOrEmpty())
+            {
+                options.Configuration = configuration["Redis:Configuration"];
+            }
+        });
+        context.Services.Replace(ServiceDescriptor.Singleton<IDistributedCache, AbpRedisCache>());
+
+
+
         context.Services.AddAbpDbContext<BookStoreDbContext>(options =>
         {
                 /* Remove "includeAllEntities: true" to create

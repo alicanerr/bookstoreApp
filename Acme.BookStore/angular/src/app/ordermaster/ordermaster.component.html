@@ -9,7 +9,7 @@
         <div class="text-end col col-md-6">
           <div class="text-lg-end pt-2">
           
-            <button *abpPermission="'BookStore.OrderDetails.Create'" id="create" class="btn btn-primary" type="button"
+            <button *abpPermission="'BookStore.OrderMasters.Create'" id="create" class="btn btn-primary" type="button"
               (click)="createorderMaster()">
               <i class="fa fa-plus mr-1"></i>
               <span>{{ '::New Order' | abpLocalization }}</span>
@@ -36,11 +36,11 @@
               </button>
               <div ngbDropdownMenu>
                 <!-- Add the abpPermission directive -->
-                <button *abpPermission="'BookStore.OrderDetails.Edit'" ngbDropdownItem (click)="editorderMaster(row.id)">
+                <button *abpPermission="'BookStore.OrderMasters.Edit'" ngbDropdownItem (click)="editorderMaster(row.id)">
                   {{ '::Edit' | abpLocalization }}
                 </button>
                 <!-- Add the abpPermission directive -->
-                <button *abpPermission="'BookStore.OrderDetails.Delete'" ngbDropdownItem (click)="delete(row.id)">
+                <button *abpPermission="'BookStore.OrderMasters.Delete'" ngbDropdownItem (click)="delete(row.id)">
                   {{ '::Delete' | abpLocalization }}
                 </button>
   

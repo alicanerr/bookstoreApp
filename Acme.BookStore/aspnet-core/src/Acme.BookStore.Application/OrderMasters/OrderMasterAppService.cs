@@ -1,5 +1,6 @@
 ﻿using Acme.BookStore.Customers;
 using Acme.BookStore.OrderDetails;
+using Acme.BookStore.Permissions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,11 @@ namespace Acme.BookStore.OrderMasters
             _customerRepository = customerRepository;
             _orderdetailRepository = orderdetailRepository;
             //_ordermasterRepository = ordermasterRepository;
+            GetPolicyName = BookStorePermissions.OrderMasters.Default;
+            GetListPolicyName = BookStorePermissions.OrderMasters.Default;
+            CreatePolicyName = BookStorePermissions.OrderMasters.Create;
+            UpdatePolicyName = BookStorePermissions.OrderMasters.Edit;
+            DeletePolicyName = BookStorePermissions.OrderMasters.Delete;
         }
 
         public async Task<ListResultDto<CustomerLookupDto>> GetCustomerLookupAsync()
@@ -58,7 +64,7 @@ namespace Acme.BookStore.OrderMasters
             {
                 throw new OrderMasterApprovalStatusEditException();
             }
-           
+
         }
 
 
@@ -75,7 +81,7 @@ namespace Acme.BookStore.OrderMasters
                                 select new { orderMaster, customer, orderDetail };
 
             //Paging
-            //query = query
+            //queryCustomer = queryCustomer
             //    .OrderBy(NormalizeSorting(input.Sorting))
             //    .Skip(input.SkipCount)
             //    .Take(input.MaxResultCount);
@@ -103,6 +109,7 @@ namespace Acme.BookStore.OrderMasters
             //odetailDtos
             );
         }
+
 
     }
 }

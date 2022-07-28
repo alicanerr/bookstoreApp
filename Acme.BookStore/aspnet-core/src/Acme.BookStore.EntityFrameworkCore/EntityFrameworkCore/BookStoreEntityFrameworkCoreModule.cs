@@ -15,6 +15,9 @@ using Volo.Abp.Caching.StackExchangeRedis;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Caching.Distributed;
+using Volo.Abp.Caching;
+using Volo.Abp.EventBus.RabbitMq;
+using Volo.Abp.RabbitMQ;
 
 namespace Acme.BookStore.EntityFrameworkCore;
 
@@ -31,6 +34,7 @@ namespace Acme.BookStore.EntityFrameworkCore;
     typeof(AbpFeatureManagementEntityFrameworkCoreModule)
     )]
 [DependsOn(typeof(AbpCachingStackExchangeRedisModule))]
+    [DependsOn(typeof(AbpEventBusRabbitMqModule))]
     public class BookStoreEntityFrameworkCoreModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
@@ -67,9 +71,21 @@ namespace Acme.BookStore.EntityFrameworkCore;
                  * See also BookStoreMigrationsDbContextFactory for EF Core tooling. */
             options.UseSqlServer();
         });
-        Configure<RedisCacheOptions>(options =>
+        Configure<AbpDistributedCacheOptions>(options =>
         {
-            //...
+            options.KeyPrefix = "Authors";
+        });
+        Configure<AbpRabbitMqOptions>(options =>
+        {
+            options.Connections.Default.UserName = "user";
+            options.Connections.Default.Password = "pass";
+            options.Connections.Default.HostName = "127.0.0.1";
+            options.Connections.Default.Port = 5672;
+        });
+        Configure<AbpRabbitMqEventBusOptions>(options =>
+        {
+            options.ClientName = "TestApp1";
+            options.ExchangeName = "TestMessages";
         });
 
     }

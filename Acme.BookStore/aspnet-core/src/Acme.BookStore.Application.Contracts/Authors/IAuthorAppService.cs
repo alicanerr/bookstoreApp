@@ -7,7 +7,7 @@ namespace Acme.BookStore.Authors
 {
     public interface IAuthorAppService : IApplicationService
     {
-        Task<AuthorDto> GetAsync(Guid id);
+        //Task<AuthorDto> GetAsync(Guid id);
 
         Task<PagedResultDto<AuthorDto>> GetListAsync(GetAuthorListDto input);
 

@@ -45,8 +45,7 @@ namespace Acme.BookStore.OrderMasters
             var customerss = await _orderdetailRepository.GetListAsync();
 
             return new ListResultDto<OrderDetailLookupDto>(
-               ObjectMapper.Map<List<OrderDetail>, List<OrderDetailLookupDto>>(customerss)
-           );
+               ObjectMapper.Map<List<OrderDetail>, List<OrderDetailLookupDto>>(customerss));
         }
         public async Task CustomDeleteAsync(Guid id, OrderMasterDto input)
         {

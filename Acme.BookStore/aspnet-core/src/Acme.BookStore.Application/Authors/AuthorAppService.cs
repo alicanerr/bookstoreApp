@@ -4,31 +4,50 @@ using System.Linq;
 using System.Threading.Tasks;
 using Acme.BookStore.Permissions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Caching.Distributed;
 using Volo.Abp.Application.Dtos;
+using Volo.Abp.Caching;
+using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Repositories;
 
 namespace Acme.BookStore.Authors
 {
     [Authorize(BookStorePermissions.Authors.Default)]
-    public class AuthorAppService : BookStoreAppService, IAuthorAppService
+    public class AuthorAppService : BookStoreAppService, IAuthorAppService, ITransientDependency
     {
+        private readonly IDistributedCache<AuthorDto, Guid> _cache;
         private readonly IAuthorRepository _authorRepository;
         private readonly AuthorManager _authorManager;
 
         public AuthorAppService(
             IAuthorRepository authorRepository,
-            AuthorManager authorManager)
+            AuthorManager authorManager,
+            IDistributedCache<AuthorDto, Guid> cache)
         {
             _authorRepository = authorRepository;
             _authorManager = authorManager;
+            _cache = cache;
         }
 
-        //...SERVICE METHODS WILL COME HERE...
+
         public async Task<AuthorDto> GetAsync(Guid id)
+        {
+            return await _cache.GetOrAddAsync(
+                id, //Guid type used as the cache key
+                async () => await GetAuthorFromDatabaseAsync(id),
+                () => new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(20)
+                }
+            );
+        }
+        public async Task<AuthorDto> GetAuthorFromDatabaseAsync(Guid id)
         {
             var author = await _authorRepository.GetAsync(id);
             return ObjectMapper.Map<Author, AuthorDto>(author);
         }
+
+
         public async Task<PagedResultDto<AuthorDto>> GetListAsync(GetAuthorListDto input)
         {
             if (input.Sorting.IsNullOrWhiteSpace())
@@ -53,6 +72,7 @@ namespace Acme.BookStore.Authors
                 ObjectMapper.Map<List<Author>, List<AuthorDto>>(authors)
             );
         }
+
         [Authorize(BookStorePermissions.Authors.Create)]
         public async Task<AuthorDto> CreateAsync(CreateAuthorDto input)
         {

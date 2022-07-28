@@ -33,6 +33,7 @@ public class BookStoreApplicationAutoMapperProfile : Profile
         CreateMap<Customer, CustomerLookupDto>();
 
         CreateMap<Author, AuthorDto>();
+        CreateMap<Author, AuthorCacheItem>();
         CreateMap<Author, AuthorLookupDto>();
 
 
